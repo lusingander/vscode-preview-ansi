@@ -12,8 +12,12 @@ function toMarkdownString(s: string): vscode.MarkdownString {
 export function activate(context: vscode.ExtensionContext) {
   vscode.languages.registerHoverProvider('*', {
     provideHover(document, position, token) {
-      const selection = document.getText(vscode.window.activeTextEditor?.selection);
-      const md = toMarkdownString(selection);
+      const selection = vscode.window.activeTextEditor?.selection;
+      if (!selection?.contains(position)) {
+        return null;
+      }
+      const selectedText = document.getText(selection);
+      const md = toMarkdownString(selectedText);
       return new vscode.Hover(md);
     }
   });
