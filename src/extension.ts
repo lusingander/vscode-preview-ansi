@@ -1,8 +1,11 @@
 import * as vscode from 'vscode';
 import { toHtml } from './ansi';
 
-function toMarkdownString(s: string): vscode.MarkdownString {
+function toMarkdownString(s: string): vscode.MarkdownString | null {
   const html = toHtml(s);
+  if (!html) {
+    return null;
+  }
   const md = new vscode.MarkdownString(html);
   md.supportHtml = true;
   md.isTrusted = true;
@@ -18,6 +21,9 @@ export function activate(context: vscode.ExtensionContext) {
       }
       const selectedText = document.getText(selection);
       const md = toMarkdownString(selectedText);
+      if (!md) {
+        return null;
+      }
       return new vscode.Hover(md);
     }
   });

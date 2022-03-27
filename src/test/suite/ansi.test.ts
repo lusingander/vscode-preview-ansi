@@ -75,6 +75,13 @@ suite('ansi test', () => {
       assert.strictEqual(actual, expected);
     });
 
+    test('not contains ansi', () => {
+      const s = `foo`;
+      const expected = null;
+      const actual = toHtml(s);
+      assert.strictEqual(actual, expected);
+    });
+
   });
 
 });

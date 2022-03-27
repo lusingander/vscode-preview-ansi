@@ -14,11 +14,18 @@ function replaceStyles(s: string): string {
   return s.replace(/color:#([0-9a-fA-F]+)/g, colorReplacer);
 }
 
-export function toHtml(s: string): string {
+function containsAnsi(s: string): boolean {
+  return s.indexOf("\x1b") !== -1;
+}
+
+export function toHtml(s: string): string | null {
   const c = new Convert({
     newline: true,
   });
   const t = replace(s);
+  if (!containsAnsi(t)) {
+    return null;
+  }
   const html = c.toHtml(t);
   return replaceStyles(html);
 }
