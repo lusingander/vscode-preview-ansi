@@ -1,6 +1,6 @@
 import Convert = require("ansi-to-html");
 
-function replaceEsc(s: string): string {
+function replace(s: string): string {
   return s.replace(/\\x1b/g, "\x1b").replace(/\\n/g, "\n");
 }
 
@@ -18,7 +18,7 @@ export function toHtml(s: string): string {
   const c = new Convert({
     newline: true,
   });
-  const t = replaceEsc(s);
+  const t = replace(s);
   const html = c.toHtml(t);
   return replaceStyles(html);
 }
